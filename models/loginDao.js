@@ -18,33 +18,21 @@ myDataSource
     console.log('Database initiate fail');
   });
 
-const createUser = async (name, email, hashedPw) => {
-  console.log('model 1');
-  const users = await myDataSource.query(
-    `
-        INSERT INTO USERS(name, email, password)
-        VALUES (?, ?, ?)
-      `,
-    [name, email, hashedPw]
-  );
-  console.log('model 2');
-  return users;
-};
-
-const checkEmailDuplicate = async email => {
-  const [userEmail] = await myDataSource.query(
+const loginUsingEmail = async (email, password) => {
+  const [user] = await myDataSource.query(
     `
       SELECT
-        email
+        id,
+        email,
+        password
       FROM users
       WHERE email = ?
     `,
     [email]
   );
-  return userEmail;
+  return user;
 };
 
 module.exports = {
-  createUser,
-  checkEmailDuplicate,
+  loginUsingEmail,
 };
