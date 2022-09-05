@@ -18,21 +18,17 @@ myDataSource
     console.log('Database initiate fail');
   });
 
-const loginUsingEmail = async (email, pwd) => {
-  const [user] = await myDataSource.query(
+const createAddress = async (address, user_id) => {
+  const address = await myDataSource.query(
     `
-      SELECT
-        id,
-        email,
-        password
-      FROM users
-      WHERE email = ?
+    INSERT INTO addresses (address, user_id)
+    VALUES (?, ?)
     `,
-    [email]
+    [address, user_id]
   );
-  return user;
+  return address;
 };
 
 module.exports = {
-  loginUsingEmail,
+  createAddress,
 };

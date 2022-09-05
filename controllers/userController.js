@@ -9,9 +9,9 @@ const pong = async (req, res) => {
 const createUser = async (req, res) => {
   console.log('controller 1');
 
-  const { name, email, password } = req.body;
+  const { user, email, pwd } = req.body;
 
-  const hasKey = { name: false, email: false, password: false };
+  const hasKey = { user: false, email: false, pwd: false };
 
   /** 받아온 데이터에 키 + 벨류 값이 존재하는지 확인하는 코드 */
   const requireKey = Object.keys(hasKey);
@@ -32,6 +32,12 @@ const createUser = async (req, res) => {
       return;
     }
   }
+  /** 이름 형식 체크하는 함수 */
+  const nameCheck = /^[가-힣a-zA-Z\s]+$/;
+  if (nameCheck.test(user) == false) {
+    res.status(400).json({ message: '이름 형식이 올바르지 않습니다.' });
+    return;
+  }
 
   /** 이메일 형식 체크하는 함수 */
   const emailCheck =
@@ -51,15 +57,15 @@ const createUser = async (req, res) => {
   /** 비밀번호 형식 체크하는 함수 */
   const pwCheck =
     /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z0-9\W]{8,}$/;
-  if (pwCheck.test(password) == false) {
+  if (pwCheck.test(pwd) == false) {
     res.status(400).json({ message: '비밀번호 형식이 올바르지 않습니다.' });
     return;
   }
 
-  const users = await userService.createUser(name, email, password);
+  const users = await userService.createUser(user, email, pwd);
 
   try {
-    if (!(password.length > 7)) {
+    if (!(pwd.length > 7)) {
       res.status(400).json({ message: '비밀번호를 다시 입력해주세요.' });
       return;
     }

@@ -2,12 +2,12 @@ const userDao = require('../models/userDao');
 
 const bcrypt = require('bcryptjs');
 
-const createUser = async (name, email, password) => {
+const createUser = async (user, email, pwd) => {
   console.log('service 1');
 
   const salt = bcrypt.genSaltSync(12);
-  const hashedPw = bcrypt.hashSync(password, salt);
-  const users = await userDao.createUser(name, email, hashedPw);
+  const hashedPw = bcrypt.hashSync(pwd, salt);
+  const users = await userDao.createUser(user, email, hashedPw);
   console.log('service 2');
 
   return users;

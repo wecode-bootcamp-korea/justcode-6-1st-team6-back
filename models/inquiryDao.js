@@ -18,21 +18,30 @@ myDataSource
     console.log('Database initiate fail');
   });
 
-const loginUsingEmail = async (email, pwd) => {
-  const [user] = await myDataSource.query(
+const createInquiry = async (name, email, content) => {
+  const inquiry = await myDataSource.query(
     `
-      SELECT
-        id,
-        email,
-        password
-      FROM users
-      WHERE email = ?
+      INSERT INTO inquiries( name, email, content)
+      VALUES (?, ?, ?)
+      `,
+    [name, email, content]
+  );
+  return inquiry;
+};
+
+const userInquiry = async email => {
+  const userInquiry = await myDataSource.query(
+    `
+    SELECT *
+    FROM inquiries
+    WHERE email = ?
     `,
     [email]
   );
-  return user;
+  return userInquiry;
 };
 
 module.exports = {
-  loginUsingEmail,
+  createInquiry,
+  userInquiry,
 };

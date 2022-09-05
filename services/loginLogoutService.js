@@ -1,15 +1,14 @@
-const userDao = require('../models/loginDao.js');
-const tokenKey = require('../token');
+const userDao = require('../models/loginLogoutDao.js');
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const loginUsingEmail = async (email, password) => {
+const loginUsingEmail = async (email, pwd) => {
   const user = await userDao.loginUsingEmail(email);
 
   if (user) {
-    const isPwCorrect = bcrypt.compareSync(password, user.password);
-    const token = jwt.sign({ userId: user.id }, tokenKey.secretKey);
+    const isPwCorrect = bcrypt.compareSync(pwd, user.password);
+    const token = jwt.sign({ userId: user.id }, process.env.SECRET_KEY);
     console.log(token);
 
     const userLoginData = {
