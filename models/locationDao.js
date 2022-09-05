@@ -12,21 +12,23 @@ const myDataSource = new DataSource({
 myDataSource
   .initialize()
   .then(() => {
-    console.log('order Data Source has been initialized!');
+    console.log('Data Source has been initialized!');
   })
   .catch(() => {
     console.log('Database initiate fail');
   });
 
-const order = async (user_id,product_id,num,price,total_price,message,address) => {
-    console.log("order in")
-    const order = await myDataSource.query(
-        `INSERT INTO orders(user_id, product_id, num, price, total_price,message,address)
-        VALUES(?,?,?,?,?,?,?)`,
-        [user_id, product_id, num, price, total_price,message,address]
-    )
-    return order
-}
+const getLocation = async () => {
+  console.log('get locations');
+  const productslist = await myDataSource.query(
+    `
+    SELECT *
+    FROM locations
+    `
+  );
+  return productslist;
+};
+
 module.exports = {
-    order
-}
+  getLocation,
+};

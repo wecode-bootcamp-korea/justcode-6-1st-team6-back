@@ -54,7 +54,6 @@ const product = async(product_id) => {
   return product
 }
 
-
 module.exports = {
   productslist,
   product

@@ -14,12 +14,12 @@ const cart = async(req,res) => {
 //cart post
 const cartpost = async(req,res) => {
     console.log('cart post controller')
-    const {user_id, product_id, num} = req.body
-    if(!user_id||!product_id||!num){
+    const {token, product_id, num} = req.body
+    if(!token||!product_id||!num){
         res.status(400).json({message:"데이터가 부족합니다"})
         return;
     }
-    const cartposts = await cartsService.cartpost(user_id,product_id,num)
+    const cartposts = await cartsService.cartpost(token,product_id,num)
     res.status(200).json({message:"success on cart post"})
 }
 //cart put

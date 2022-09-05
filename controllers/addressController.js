@@ -28,3 +28,7 @@ const createAddress = async (req, res) => {
     }
   }
 };
+
+module.exports = {
+  createAddress,
+};
