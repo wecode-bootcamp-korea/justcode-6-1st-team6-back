@@ -9,7 +9,7 @@ const productsRouter = require('./productsRouter');
 const cartsRouter = require('./cartsRouter');
 const locationRouter = require('./locationRouter.js');
 const orderRouter = require('./orderRouter');
-const tokenRouter = require('./tokenRouter.js');
+const tokenRouter = require('./tokenRouter');
 
 router.use('/users', userRouter);
 router.use('/users', loginLogoutRouter);

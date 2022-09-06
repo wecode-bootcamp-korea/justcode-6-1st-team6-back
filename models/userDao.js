@@ -44,7 +44,21 @@ const checkEmailDuplicate = async email => {
   return userEmail;
 };
 
+const sendUserName = async id => {
+  const userId = await myDataSource.query(
+    `
+    SELECT
+    name
+    FROM users
+    WHERE id = ?
+    `,
+    [id]
+  );
+  return userId;
+};
+
 module.exports = {
   createUser,
   checkEmailDuplicate,
+  sendUserName,
 };
