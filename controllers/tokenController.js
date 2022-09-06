@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const tokenAuth = (req, res, next) => {
+  const token = req.param;
   const key = process.env.SECRET_KEY;
   // 인증 완료
   try {

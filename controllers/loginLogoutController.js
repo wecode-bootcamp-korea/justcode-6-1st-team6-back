@@ -29,7 +29,7 @@ const login = async (req, res) => {
   try {
     // 등록된 email인지 확인
     if (!user) {
-      res.status(404).json({ message: '존재하지 않는 이메일입니다.' });
+      res.status(400).json({ message: '존재하지 않는 이메일입니다.' });
       return;
     }
 
