@@ -1,6 +1,7 @@
 const locationService = require('../services/locationService.js');
 
 const getLocation = async (req, res) => {
+
   try {
     const location = await locationService.getLocation();
     res.status(200).json(location);
@@ -8,6 +9,7 @@ const getLocation = async (req, res) => {
     console.log(err);
     res.status(500).json({ message: 'error' });
   }
+
 };
 
 module.exports = {

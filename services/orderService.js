@@ -1,8 +1,15 @@
 const orderDao = require('../models/orderDao')
 const cartsDao = require('../models/cartsDao')
+const jwt = require('jsonwebtoken')
+const dotenv = require('dotenv')
+dotenv.config()
 
-const order = async (user_id,message) => {
+const order = async (token,message,address) => {
     console.log("order service")
+    const key = process.env.SECRET_KEY
+    const token_id = jwt.verify(token,key)
+    const user_id = token_id.userId
+
     const cart = await cartsDao.cart(user_id);
     const cart_a = cart[0]
     const product_id = cart_a.product_id
@@ -21,7 +28,7 @@ const order = async (user_id,message) => {
     for(let j=0; j<fix_cart_id.length;j++){
         cartsDao.cartdelete(Number(fix_cart_id[j]))
     }
-    const order = await orderDao.order(user_id,product_id,num,price,total_price,message)
+    const order = await orderDao.order(user_id,product_id,num,price,total_price,message,address)
     return order
 }
 

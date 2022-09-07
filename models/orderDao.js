@@ -18,12 +18,12 @@ myDataSource
     console.log('Database initiate fail');
   });
 
-const order = async (user_id,product_id,num,price,total_price,message) => {
+const order = async (user_id,product_id,num,price,total_price,message,address) => {
     console.log("order in")
     const order = await myDataSource.query(
-        `INSERT INTO orders(user_id, product_id, num, price, total_price,message)
-        VALUES(?,?,?,?,?,?)`,
-        [user_id, product_id, num, price, total_price,message]
+        `INSERT INTO orders(user_id, product_id, num, price, total_price,message,address)
+        VALUES(?,?,?,?,?,?,?)`,
+        [user_id, product_id, num, price, total_price,message,address]
     )
     return order
 }
