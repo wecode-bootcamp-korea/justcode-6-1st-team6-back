@@ -78,7 +78,37 @@ const createUser = async (req, res) => {
   res.status(201).json({ message: '회원가입 성공!' });
 };
 
+const sendUserName = async (req, res) => {
+  const { token } = req.body;
+  if (!token) {
+    res.status(400).json({ message: '토큰값을 입력해주세요' });
+  }
+
+  try {
+    const userName = await userService.sendUserName(token);
+    res.status(200).json({ message: '이름 가져오기 성공', userName });
+    console.log(userName);
+  } catch (err) {
+    console.log(err);
+    if (err.name === 'TokenExpiredError') {
+      return res.status(419).json({
+        code: 419,
+        message: '토큰이 만료되었습니다.',
+      });
+    }
+    // 토큰의 비밀키가 일치하지 않는 경우
+    if (err.name === 'JsonWebTokenError') {
+      return res.status(401).json({
+        code: 401,
+        message: '유효하지 않은 토큰입니다.',
+      });
+    }
+    res.status(500);
+  }
+};
+
 module.exports = {
   createUser,
   pong,
+  sendUserName,
 };

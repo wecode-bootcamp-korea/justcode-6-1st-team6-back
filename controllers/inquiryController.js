@@ -28,6 +28,12 @@ const createInquiry = async (req, res) => {
       return;
     }
   }
+  /** 이름 형식 체크하는 함수 */
+  const nameCheck = /^[가-힣a-zA-Z\s]+$/;
+  if (nameCheck.test(name) == false) {
+    res.status(400).json({ message: '이름 형식이 올바르지 않습니다.' });
+    return;
+  }
   /** 이메일 형식 체크하는 함수 */
   const emailCheck =
     /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
@@ -37,8 +43,12 @@ const createInquiry = async (req, res) => {
   }
 
   const inquiry = await inquiryService.createInquiry(name, email, content);
-
-  res.status(200).json({ message: '문의 작성 성공!' });
+  try {
+    res.status(200).json({ message: '문의 작성 성공!' });
+  } catch (err) {
+    console.log(err);
+    res.status(500);
+  }
 };
 
 const userInquiry = async (req, res) => {

@@ -23,7 +23,6 @@ const createReview = async (req, res) => {
       hasKey[key] = true;
     }
   });
-
   /** 받아온 데이터에 키 + 벨류 값이 없을때 에러를 표시해주는 코드*/
   const hasKeyArray = Object.entries(hasKey);
   for (let i = 0; i < hasKeyArray.length; i++) {
@@ -41,20 +40,24 @@ const createReview = async (req, res) => {
     return;
   }
 
-  const userReview = await userService.createReview(
-    name,
-    email,
-    rating,
-    title,
-    content,
-    product_id
-  );
+  try {
+    const userReview = await userService.createReview(
+      name,
+      email,
+      rating,
+      title,
+      content,
+      product_id
+    );
 
-  res.status(200).json({ message: '리뷰 작성 성공!' });
+    res.status(200).json({ message: '리뷰 작성 성공!' });
+  } catch (err) {
+    res.status(500);
+  }
 };
 
 const productReview = async (req, res) => {
-  const { product_id } = req.body;
+  const product_id = req.body;
   const productReview = await userService.productReview(product_id);
   res.status(200).json({ message: productReview });
   return productReview;

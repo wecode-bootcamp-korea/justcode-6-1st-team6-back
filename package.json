@@ -11,6 +11,7 @@
     "node": "^16.17.0",
     "nodemon": "^2.0.19",
     "typeorm": "^0.3.9"
+
   },
   "scripts": {
     "start": "node",
