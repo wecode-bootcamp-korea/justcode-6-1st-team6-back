@@ -8,6 +8,6 @@ const router = express.Router();
 router.get('/cart/:id',cart);
 router.post('/cart',cartpost);
 router.put('/cart',cartput)
-router.delete('/cart/:id',cartdelete)
+router.delete('/cart',cartdelete)
 
 module.exports = router;

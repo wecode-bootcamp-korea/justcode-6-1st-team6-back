@@ -19,11 +19,12 @@ myDataSource
   });
 
 //all carts list
+/*
 const cartlist = async (req,res) => {
     console.log("load cartlist")
     const cartlist = await myDataSource.query(
         `SELECT
-        carts.user_id,carts.product_id,
+        carts.product_id,
         JSON_ARRAYAGG(name)as product_name, JSON_ARRAYAGG(photos)as product_photos,
         JSON_ARRAYAGG(price)as product_price, JSON_ARRAYAGG(carts.num)as num FROM carts
             LEFT JOIN (SELECT product_id,MAX(photos)as photos FROM photos GROUP BY product_id)as photos ON carts.product_id = photos.product_id
@@ -32,17 +33,17 @@ const cartlist = async (req,res) => {
     )
     return cartlist
 }
-
+*/
 //id cart
 const cart = async (user_id) => {
     console.log("load cart :"+user_id)
     const cart = await myDataSource.query(
         `SELECT
-        carts.user_id, JSON_ARRAYAGG(carts.id)as cart_id,
+        JSON_ARRAYAGG(carts.id)as cart_id,
         JSON_ARRAYAGG(carts.product_id)as product_id,
         JSON_ARRAYAGG(name)as product_name, JSON_ARRAYAGG(photos)as product_photos,
         JSON_ARRAYAGG(price)as product_price, JSON_ARRAYAGG(carts.num)as num FROM carts
-            LEFT JOIN (SELECT product_id,MAX(photos)as photos FROM photos GROUP BY product_id)as photos ON carts.product_id = photos.product_id
+            LEFT JOIN (SELECT product_id,MIN(photos)as photos FROM photos GROUP BY product_id)as photos ON carts.product_id = photos.product_id
             LEFT JOIN products ON carts.product_id = products.id
             WHERE user_id=?
             GROUP BY carts.user_id`,
@@ -84,7 +85,7 @@ const cartdelete = async (cart_id) => {
 }
 
 module.exports = {
-    cartlist,
+    //cartlist,
     cart,
     cartpost,
     cartput,

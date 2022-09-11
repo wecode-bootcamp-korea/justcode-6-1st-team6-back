@@ -1,4 +1,4 @@
-const userService = require('../services/reviewService.js');
+const reviewService = require('../services/reviewService.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -41,7 +41,7 @@ const createReview = async (req, res) => {
   }
 
   try {
-    const userReview = await userService.createReview(
+    const userReview = await reviewService.createReview(
       name,
       email,
       rating,
@@ -57,13 +57,23 @@ const createReview = async (req, res) => {
 };
 
 const productReview = async (req, res) => {
-  const product_id = req.body;
-  const productReview = await userService.productReview(product_id);
-  res.status(200).json({ message: productReview });
+  const {product_id} = req.body;
+  const productReview = await reviewService.productReview(product_id);
+  res.send(productReview)
   return productReview;
 };
+
+const reviewDelete = async(req,res) => {
+  const {id, product_id, email} = req.body;
+  console.log(id)
+  const reviewDelete = await reviewService.reviewDelete(id,email)
+  const productReview = await reviewService.productReview(product_id);
+  res.send(productReview)
+  return reviewDelete
+}
 
 module.exports = {
   createReview,
   productReview,
+  reviewDelete
 };

@@ -3,7 +3,7 @@ const orderService = require('../services')
 const order = async(req,res) => {
     console.log('order controller')
     const {token, message, address} = req.body;
-    if(!token||!message||!address){
+    if(!token||!address){
         res.status(400).json({message:"데이터가 부족합니다"})
         return;
     }
@@ -11,6 +11,18 @@ const order = async(req,res) => {
     res.status(200).json({message:"success on order"})
 }
 
+const orderList = async(req,res) => {
+    console.log('orderList controller')
+    const token = req.params.id
+    if(!token){
+        res.status(400).json({message:"로그인 확인"})
+        return
+    }
+    const orderLists = await orderService.orderList(token)
+    res.send(orderLists)
+}
+
 module.exports ={
-    order
+    order,
+    orderList
 }
