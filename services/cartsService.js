@@ -5,7 +5,23 @@ dotenv.config()
 
 const cart = async (id) => {
     console.log("cart Servics")
-    const cart = await cartsDao.cart(id);
+    const key = process.env.SECRET_KEY
+    if(id==null){
+        return null
+    }
+    console.log(jwt.verify(id,key))
+    const token_id = jwt.verify(id,key)
+    const token = token_id.userId
+    const cart = await cartsDao.cart(token);
+    if(cart[0]==null){
+        return cart
+    }
+    cart[0].cart_id = JSON.parse(cart[0].cart_id)
+    cart[0].product_id = JSON.parse(cart[0].product_id)
+    cart[0].product_name = JSON.parse(cart[0].product_name)
+    cart[0].product_photos = JSON.parse(cart[0].product_photos)
+    cart[0].product_price = JSON.parse(cart[0].product_price)
+    cart[0].num = JSON.parse(cart[0].num)
     return cart
 }
 
@@ -14,26 +30,20 @@ const cartpost = async (token, product_id, num) => {
     const key = process.env.SECRET_KEY
     const token_id = jwt.verify(token,key)
     const id = token_id.userId
-    console.log(id)
-
     const cart = await cartsDao.cart(id);
+
     if (cart[0]==null) {
         const cartpost = await cartsDao.cartpost(id, product_id, num)
         return cartpost
     } else {
-        const cart_a = cart[0]
-        const a_product_id = cart_a.product_id
-        const a_num = cart_a.num
-        const a_id = cart_a.cart_id
+        let product_set = JSON.parse(cart[0].product_id)
+        let number_set = JSON.parse(cart[0].num)
+        let cart_set = JSON.parse(cart[0].cart_id)
 
-        let fix_product_id = a_product_id.slice(1, (a_product_id.length - 1)).split(',')
-        let fix_num = a_num.slice(1, (a_num.length - 1)).split(',')
-        let fix_id = a_id.slice(1, (a_id.length - 1)).split(',')
-
-        for (let i = 0; i < fix_product_id.length; i++) {
-            if (fix_product_id[i] == product_id) {
-                let number = Number(fix_num[i])
-                const cartput = await cartsDao.cartput(fix_id[i], number + num)
+        for (let i = 0; i < product_set.length; i++) {
+            if (product_set[i] == product_id) {
+                let number = number_set[i]
+                const cartput = await cartsDao.cartput(cart_set[i], number + num)
                 return cartput
             }
         }

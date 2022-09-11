@@ -9,7 +9,7 @@ const loginUsingEmail = async (email, pwd) => {
   if (user) {
     const isPwCorrect = bcrypt.compareSync(pwd, user.password);
     const token = jwt.sign({ userId: user.id }, process.env.SECRET_KEY, {
-      expiresIn: '1h',
+      expiresIn: '24h',
     });
     console.log(token);
 

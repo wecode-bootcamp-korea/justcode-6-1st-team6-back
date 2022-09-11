@@ -39,16 +39,34 @@ const createReview = async (
 const productReview = async product_id => {
   const productReview = await myDataSource.query(
     `
-    SELECT *
+    SELECT 
+      id,
+      name, 
+      email, 
+      rating, 
+      title, 
+      content, 
+      date_format(created_at, '%Y-%m-%d') as date
     FROM reviews
-    WHERE product_id = ?
+    WHERE reviews.product_id = ?
     `,
     [product_id]
   );
   return productReview;
 };
 
+const reviewDelete = async (id,email) => {
+  console.log('delete cart')
+  const reviewDelete = await myDataSource.query(
+    `DELETE FROM reviews
+    WHERE id=? AND email = ?`,
+    [id,email]
+  )
+  return reviewDelete
+}
+
 module.exports = {
   createReview,
   productReview,
+  reviewDelete
 };
